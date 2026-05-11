@@ -15,11 +15,34 @@ void SignalHandler(int) {
     running.store(false, std::memory_order_release);
 }
 
-template<class Functor>
+template <class Functor>
 int TimerStart(Functor& functor, int delay = 5) {
-    // Установка обработчиков сигналов для graceful shutdown
-    std::signal(SIGINT, SignalHandler);
-    std::signal(SIGTERM, SignalHandler);
+    // Установка обработчиков сигналов для graceful shutdown через sigaction
+    struct sigaction sa{};
+    // Очищаем маску сигналов
+    sigemptyset(&sa.sa_mask);
+    // Назначаем функцию-обработчик
+    sa.sa_handler = SignalHandler;
+    // Устанавливаем флаги:
+    // SA_RESTART - перезапускать системные вызовы после сигнала
+    // Это важно для poll, read и других вызовов
+    sa.sa_flags = SA_RESTART;
+    // Регистрируем обработчик для SIGINT (Ctrl+C)
+    if (sigaction(SIGINT, &sa, nullptr) == -1) {
+        std::cerr << "Ошибка регистрации обработчика SIGINT: " << strerror(errno) << std::endl;
+        return 1;
+    }
+    // Регистрируем обработчик для SIGTERM (завершение процесса)
+    if (sigaction(SIGTERM, &sa, nullptr) == -1) {
+        std::cerr << "Ошибка регистрации обработчика SIGTERM: " << strerror(errno) << std::endl;
+        return 1;
+    }
+
+    // Регистрируем обработчик для SIGINT (Ctrl+Z)
+    if (sigaction(SIGTSTP, &sa, nullptr) == -1) {
+        std::cerr << "Ошибка регистрации обработчика SIGTSTP: " << strerror(errno) << std::endl;
+        return 1;
+    }
 
     // Создаем таймер
     int timer_fd = timerfd_create(CLOCK_MONOTONIC, 0);
@@ -74,7 +97,6 @@ int TimerStart(Functor& functor, int delay = 5) {
                 if (!running)
                     break;
                 functor();
-                
             }
         }
     }

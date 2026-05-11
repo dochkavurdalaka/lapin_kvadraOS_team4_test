@@ -9,10 +9,15 @@ int main() {
     // 1. Простой GET-запрос на "/"
     std::cout << "=== Запрос на /media_files ===" << std::endl;
     auto res = cli.Get("/media_files");
-    if (res && res->status == 200) {
-        std::cout << res->body << std::endl;
+    if (res) {
+        if (res->status == 200) {
+            std::cout << res->body << std::endl;
+        } else {
+            std::cout << "Server returned status: " << res->status << std::endl;
+        }
     } else {
-        std::cout << "Ошибка!" << std::endl;
+        auto err = res.error();
+        std::cout << "HTTP request failed: " << httplib::to_string(err) << std::endl;
     }
 
     return 0;
