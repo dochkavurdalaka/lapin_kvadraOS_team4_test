@@ -106,8 +106,8 @@
 
 1.  **Клонируйте репозиторий:**
     ```bash
-    git clone <адрес-вашего-репозитория>
-    cd <имя-папки-репозитория>
+    git clone https://github.com/dochkavurdalaka/lapin_kvadraOS_team4_test/
+    cd lapin_kvadraOS_team4_test/
     ```
 
 2.  **Создайте директорию для сборки:**
