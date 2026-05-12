@@ -65,10 +65,12 @@ int main(int argc, char* argv[]) {
         std::lock_guard guard{scan_mutex};
         scan_result = std::move(result);
     };
-    TimerStart(func, time_interval);
+    code = TimerStart(func, time_interval);
 
     svr.stop();
 
-    std::cout << "Приложение остановлено" << std::endl;
-    return 0;
+    if (code == 0) {
+        std::cout << "Приложение остановлено" << std::endl;
+    }
+    return code;
 }

@@ -17,6 +17,11 @@
                 "short": "Asan",
                 "long": "Instrument with Address Sanitizer",
                 "buildType": "Asan"
+            },
+            "tsan": {
+                "short": "Tsan",
+                "long": "Instrument with Thread Sanitizer",
+                "buildType": "Tsan"
             }
         }
     }

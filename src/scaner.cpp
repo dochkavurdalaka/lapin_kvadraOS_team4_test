@@ -6,7 +6,7 @@
 using json = nlohmann::json;
 
 void MainTask(const std::string& home_dir, const Filter& filter, bool recursive, bool full_path) {
-    std::cout << "Сканирование начато:" << home_dir << std::endl;
+    std::cout << "Сканирование начато: " << home_dir << std::endl;
     // std::cout << "----------------------------------------" << std::endl;
     std::unordered_map<std::string, std::vector<std::string>> result =
         ListFiles(home_dir, filter, recursive, full_path);
@@ -34,9 +34,8 @@ void MainTask(const std::string& home_dir, const Filter& filter, bool recursive,
     std::cout << "JSON успешно записан в " << media_file_path << std::endl;
 }
 
-
 int main(int argc, char* argv[]) {
-    auto [recursive, full_path, time_interval,code] = GetArguments(argc, argv);
+    auto [recursive, full_path, time_interval, code] = GetArguments(argc, argv);
     if (code == -1) {
         return 0;
     } else if (code == 1) {
@@ -54,8 +53,10 @@ int main(int argc, char* argv[]) {
 
     auto func = [&]() { MainTask(home_dir, filter, recursive, full_path); };
 
-    TimerStart(func, time_interval);
+    code = TimerStart(func, time_interval);
 
-    std::cout << "Приложение остановлено" << std::endl;
-    return 0;
+    if (code == 0) {
+        std::cout << "Приложение остановлено" << std::endl;
+    }
+    return code;
 }

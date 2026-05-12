@@ -68,8 +68,6 @@ void ProcessDirectory(const fs::path& path,
         }
 
         std::string ext = entry.path().extension().string();
-        // std::transform(ext.begin(), ext.end(), ext.begin(),
-        //                [](unsigned char c) { return std::tolower(c); });
 
         std::transform(ext.begin(), ext.end(), ext.begin(), ::tolower);
 

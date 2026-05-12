@@ -25,6 +25,19 @@ function(setup_sanitizers target)
             $<$<CONFIG:Asan>:-fsanitize=address>
             $<$<CONFIG:Asan>:-fsanitize=undefined>
         )
+
+
+        target_compile_options(${target} PRIVATE
+            $<$<CONFIG:Tsan>:-g>
+            $<$<CONFIG:Tsan>:-fsanitize=thread>
+            $<$<CONFIG:Tsan>:-fno-omit-frame-pointer>
+            $<$<CONFIG:Tsan>:-O1>
+            $<$<CONFIG:Tsan>:-DTSAN>
+        )
+        
+        target_link_options(${target} PRIVATE
+            $<$<CONFIG:Tsan>:-fsanitize=thread>
+        )
     endif()
 endfunction()
 
