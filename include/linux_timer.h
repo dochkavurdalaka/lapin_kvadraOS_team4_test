@@ -2,7 +2,6 @@
 
 #include <atomic>
 #include <iostream>
-#include <format>
 #include <csignal>
 #include <system_error>
 #include <sys/timerfd.h>
@@ -64,7 +63,7 @@ int TimerStart(Functor& functor, int delay = 5) {
         return 1;
     }
 
-    std::cout << std::format("Таймер запущен. Интервал: {} сек", delay) << std::endl;
+    std::cout << "Таймер запущен. Интервал: " << delay << " сек" << std::endl;
     std::cout << "Нажмите Ctrl+C для остановки" << std::endl;
 
     // Используем poll для ожидания (можно заменить на epoll для многих таймеров)
