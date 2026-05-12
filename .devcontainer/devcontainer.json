@@ -1,0 +1,22 @@
+{
+    "name": "lapin_kvadraOS_team4_test Dev Container",
+    "build": {
+        "dockerfile": "../Dockerfile",
+        "context": ".."
+    },
+    "settings": {
+        "terminal.integrated.defaultProfile.linux": "bash"
+    },
+    "extensions": [
+        "ms-vscode.cpptools",
+        "ms-vscode.cmake-tools",
+        "twxs.cmake",
+        "jeff-hykin.better-cpp-syntax"
+    ],
+    "mounts": [
+        "source=${localWorkspaceFolder},target=/workspace,type=bind",
+        "source=${env:HOME},target=/host_home,type=bind,readonly"
+    ],
+    "workspaceFolder": "/workspace",
+    "remoteUser": "root"
+}
